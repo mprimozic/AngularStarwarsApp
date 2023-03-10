@@ -1,0 +1,31 @@
+
+<div class="col-4">
+    <a [routerLink]="['specie', specie.name]">
+        <div class="card">
+            <div class="card-header">
+                <img src="{{imagePath}}" alt="">
+                <div class="card-img-overlay">
+                    <div class="card-title">
+                        <h2>{{specie.name}}</h2>
+                    </div>
+                </div>
+            </div>
+            <ul className="list-group list-group-flush">
+                <li class="list-group-item">
+                    <b>Classification:</b>
+                    {{specie.classification}}
+                </li>
+                <li class="list-group-item">
+                    <b>Designation:</b>
+                    {{specie.designation}}
+                </li>
+                <li class="list-group-item">
+                    <b>Language:</b>
+                    {{specie.language}}
+                </li>
+            </ul>
+        </div>
+    </a>
+    
+</div>
+

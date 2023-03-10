@@ -1,0 +1,26 @@
+<app-loader *ngIf="loading">
+</app-loader>
+
+<app-navbar
+    [userName]="user.name"
+    [specieName]="specieName"
+    >
+</app-navbar>
+
+<div *ngIf="specieName!='Wookie'">
+    <app-vehicles
+        [specieVehicles]="vehicles"
+        [specieName]="specieName" 
+    > </app-vehicles>
+
+    <app-form 
+        (onAddVehicle)="addVehicle($event)"
+    ></app-form>
+</div>
+
+
+
+<app-starships *ngIf="specieName=='Wookie'"
+    [starships]="starships"
+    [specieName]="specieName">
+</app-starships>

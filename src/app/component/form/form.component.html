@@ -1,0 +1,19 @@
+<form [formGroup]="myForm" class="container mt-4" (ngSubmit)="onSubmit(name.value, model.value, manufacturer.value, cost_in_credits.value)" >
+    <div class="mb-2 row">
+        <label for="name" class="col-sm-2 col-form-label">Name</label>
+        <input type="text" class="form-control" placeholder="name" id="name" formControlName="name">
+    </div>
+    <div class="mb-2 row">
+        <label for="model" class="col-sm-2 col-form-label">Model</label>
+        <input type="text" class="form-control" placeholder="model" id="model" formControlName="model">
+    </div>
+    <div class="mb-2 row">
+        <label for="manufacturer" class="col-sm-2 col-form-label">Manufacturer</label>
+        <input type="text" class="form-control" placeholder="manufacturer" id="manufacturer" formControlName="manufacturer">
+    </div>
+    <div class="mb-2 row">
+        <label for="cost_in_credits" class="col-sm-2 col-form-label">Cost in credits</label>
+        <input type="text" class="form-control" placeholder="cost_in_credits" id="cost_in_credits" formControlName="cost_in_credits">
+    </div>
+    <button type="submit">Add</button>
+</form>   

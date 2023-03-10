@@ -1,0 +1,9 @@
+<app-loader *ngIf="loading"></app-loader>
+
+<div class="container mt-5">
+    <div class="row">
+        <app-species *ngFor="let specie of species"
+            [specie]="specie">
+        </app-species>
+    </div>
+</div>

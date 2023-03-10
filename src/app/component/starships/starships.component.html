@@ -1,0 +1,25 @@
+<div class="container">
+    <div class="row" >
+        <div class="card-title">{{specieName}} vehicles</div>
+        <div class="col-4 card" *ngFor="let starship of starships">         
+            <ul className="list-group list-group-flush">
+                <li className="list-group-item">
+                    <b>Name: </b>
+                    {{starship.name}}
+                </li>
+                <li className="list-group-item">
+                    <b>Model: </b>
+                    {{starship.model}}
+                </li>
+                <li className="list-group-item">
+                    <b>Cost in credits: </b>
+                    {{starship.cost_in_credits}}
+                </li>
+                <li className="list-group-item">
+                    <b>Starship class: </b>
+                    {{starship.starship_class}}
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
