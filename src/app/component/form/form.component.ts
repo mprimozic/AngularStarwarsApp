@@ -39,7 +39,6 @@ export class FormComponent implements OnInit{
 
   onSubmit(name: string, model: string, manufacturer: string, cost_in_credits: number) {
     const newVehicle = new Vehicle(name, model, manufacturer, cost_in_credits);
-    
     if (this.myForm.valid) {
       this.onAddVehicle.emit(newVehicle);
     }

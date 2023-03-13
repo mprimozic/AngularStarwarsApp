@@ -13,6 +13,10 @@
         [specieName]="specieName" 
     > </app-vehicles>
 
+    <div class="container mt-3">
+        <button class="btn btn-primary" (click)="deleteVehicles()">Delete manually added vehicles</button>
+    </div>
+
     <app-form 
         (onAddVehicle)="addVehicle($event)"
     ></app-form>

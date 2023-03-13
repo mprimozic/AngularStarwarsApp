@@ -4,6 +4,7 @@ import { People } from 'src/app/helpers/classes/People';
 import { Specie } from 'src/app/helpers/classes/Specie';
 import { Starship } from 'src/app/helpers/classes/Starship';
 import { Vehicle } from 'src/app/helpers/classes/Vehicle';
+import { STORAGE_KEY_DROID, STORAGE_KEY_HUMAN } from 'src/app/helpers/constants/storageKeys';
 import { API_VEHICLES } from 'src/app/helpers/constants/swapiEndpoints';
 import { SpeciesService } from 'src/app/service/species.service';
 
@@ -19,6 +20,7 @@ export class SpeciePageComponent implements OnChanges {
   public loading: boolean = true;
   public vehicles!: Vehicle[];
   public starships!: Starship[];
+  public specieVideo: string = '';
 
   constructor(private route:ActivatedRoute, private speciService:SpeciesService) {
     this.loading = true;
@@ -36,7 +38,8 @@ export class SpeciePageComponent implements OnChanges {
         }
 
       });
-    }) 
+    })
+    this.getSpecieVideo(this.specieName);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -44,11 +47,12 @@ export class SpeciePageComponent implements OnChanges {
   }
 
   getUserAndSpecieVehiclesData(userUrl: string, specieVehicleUrl: string) {
+    const vehiclesFromStorage: Array<Vehicle> = this.getDataFromStorage();
     this.speciService.getUser(userUrl).subscribe(user => {
       this.user = user;          
     });
     this.speciService.getVehicle(specieVehicleUrl).subscribe(data => {
-      this.vehicles = data;
+      this.vehicles = [...data, ...vehiclesFromStorage];
       this.loading = false;
     })
   }
@@ -76,5 +80,92 @@ export class SpeciePageComponent implements OnChanges {
 
   addVehicle(vehicle: Vehicle) {
     this.vehicles.push(vehicle);
+    this.setDataToStorage(vehicle);
+  }
+
+  setDataToStorage(vehicle: Vehicle) {
+    const vehiclesArray: Array<Vehicle> = [vehicle];
+
+    switch (this.specieName) {
+      case 'Human':
+        const dataFromHumanStorage = localStorage.getItem(STORAGE_KEY_HUMAN);
+        if (dataFromHumanStorage != null) {
+          const vehiclesFromStorage: Array<Vehicle> = JSON.parse(dataFromHumanStorage);
+          vehiclesFromStorage.push(vehicle);
+          localStorage.setItem(STORAGE_KEY_HUMAN, JSON.stringify(vehiclesFromStorage));
+        } else {
+          localStorage.setItem(STORAGE_KEY_HUMAN, JSON.stringify(vehiclesArray));
+        }
+        break;
+      case 'Droid':
+        const dataFromDroidStorage = localStorage.getItem(STORAGE_KEY_DROID);
+        if (dataFromDroidStorage != null) {
+          const vehiclesFromStorage: Array<Vehicle> = JSON.parse(dataFromDroidStorage);
+          vehiclesFromStorage.push(vehicle);
+          localStorage.setItem(STORAGE_KEY_DROID, JSON.stringify(vehiclesFromStorage));
+        } else {
+          localStorage.setItem(STORAGE_KEY_DROID, JSON.stringify(vehiclesArray));
+        }
+        break;
+    
+      default:
+        break;
+    }
+  }
+
+  getDataFromStorage(): Array<Vehicle> {
+    let vehiclesFromStorage: Array<Vehicle> = [];
+    if(this.specieName === 'Human'){
+      const dataFromStorage = localStorage.getItem(STORAGE_KEY_HUMAN);
+      if (dataFromStorage != null) {
+        vehiclesFromStorage = JSON.parse(dataFromStorage);
+      }
+    } else if (this.specieName === 'Droid') {
+      const dataFromStorage = localStorage.getItem(STORAGE_KEY_DROID);
+      if (dataFromStorage != null) {
+        vehiclesFromStorage = JSON.parse(dataFromStorage);
+      }
+    }
+    return vehiclesFromStorage;
+  }
+
+  deleteVehicles() {
+    const vehiclesFromStorage: Array<Vehicle> = this.getDataFromStorage();
+    let filterVehicles: Array<Vehicle> = [];;
+    vehiclesFromStorage.map((vehicle => {
+      filterVehicles = this.vehicles.filter(specieVehicle => {
+        return (specieVehicle.name != vehicle.name);
+      });
+    }));
+    this.vehicles = filterVehicles;
+    
+    this.removeVehiclesFromStorage();
+  }
+
+  removeVehiclesFromStorage() {
+    switch (this.specieName) {
+      case 'Human':
+        localStorage.removeItem(STORAGE_KEY_HUMAN);
+        break;
+      case 'Droid':
+        localStorage.removeItem(STORAGE_KEY_DROID);
+        break;
+    
+      default:
+        break;
+    }
+  }
+
+  getSpecieVideo(specieName: string) {
+    switch (specieName) {
+      case 'Human':
+          this.specieVideo = 'dOSzCHmP1xM';
+          break;
+      case 'Droid':
+          this.specieVideo = 'buJjccK98FQ';
+          break;       
+      default:
+          break;
+  }
   }
 }
