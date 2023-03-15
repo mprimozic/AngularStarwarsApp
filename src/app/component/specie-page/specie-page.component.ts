@@ -1,4 +1,4 @@
-import { Component, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { People } from 'src/app/helpers/classes/People';
 import { Specie } from 'src/app/helpers/classes/Specie';
@@ -13,7 +13,7 @@ import { SpeciesService } from 'src/app/service/species.service';
   templateUrl: './specie-page.component.html',
   styleUrls: ['./specie-page.component.css']
 })
-export class SpeciePageComponent implements OnChanges {
+export class SpeciePageComponent implements OnChanges, OnInit {
   public specieName!: string;
   public specie!: Specie;
   public user!: People;
@@ -23,9 +23,13 @@ export class SpeciePageComponent implements OnChanges {
   public specieVideo: string = '';
 
   constructor(private route:ActivatedRoute, private speciService:SpeciesService) {
-    this.loading = true;
+    
+  }
+
+  ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.specieName = params['specieName'];
+      this.loading = true;
       this.speciService.getSpecies(this.specieName).subscribe(data => {
         this.specie = data[0];
         const userUrl = this.specie.people ? this.specie.people[0] : '';
@@ -38,8 +42,9 @@ export class SpeciePageComponent implements OnChanges {
         }
 
       });
+      this.getSpecieVideo(this.specieName);
     })
-    this.getSpecieVideo(this.specieName);
+    
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -69,9 +74,9 @@ export class SpeciePageComponent implements OnChanges {
 
   getSpecieVehicleUrl(specieName: string): string {
     switch (specieName) {
-      case 'Human':
+      case 'human':
         return API_VEHICLES;
-      case 'Droid':
+      case 'droid':
         return API_VEHICLES + '?search=droid';    
       default:
         return '';
@@ -87,7 +92,7 @@ export class SpeciePageComponent implements OnChanges {
     const vehiclesArray: Array<Vehicle> = [vehicle];
 
     switch (this.specieName) {
-      case 'Human':
+      case 'human':
         const dataFromHumanStorage = localStorage.getItem(STORAGE_KEY_HUMAN);
         if (dataFromHumanStorage != null) {
           const vehiclesFromStorage: Array<Vehicle> = JSON.parse(dataFromHumanStorage);
@@ -97,7 +102,7 @@ export class SpeciePageComponent implements OnChanges {
           localStorage.setItem(STORAGE_KEY_HUMAN, JSON.stringify(vehiclesArray));
         }
         break;
-      case 'Droid':
+      case 'droid':
         const dataFromDroidStorage = localStorage.getItem(STORAGE_KEY_DROID);
         if (dataFromDroidStorage != null) {
           const vehiclesFromStorage: Array<Vehicle> = JSON.parse(dataFromDroidStorage);
@@ -115,12 +120,12 @@ export class SpeciePageComponent implements OnChanges {
 
   getDataFromStorage(): Array<Vehicle> {
     let vehiclesFromStorage: Array<Vehicle> = [];
-    if(this.specieName === 'Human'){
+    if(this.specieName === 'human'){
       const dataFromStorage = localStorage.getItem(STORAGE_KEY_HUMAN);
       if (dataFromStorage != null) {
         vehiclesFromStorage = JSON.parse(dataFromStorage);
       }
-    } else if (this.specieName === 'Droid') {
+    } else if (this.specieName === 'droid') {
       const dataFromStorage = localStorage.getItem(STORAGE_KEY_DROID);
       if (dataFromStorage != null) {
         vehiclesFromStorage = JSON.parse(dataFromStorage);
@@ -144,10 +149,10 @@ export class SpeciePageComponent implements OnChanges {
 
   removeVehiclesFromStorage() {
     switch (this.specieName) {
-      case 'Human':
+      case 'human':
         localStorage.removeItem(STORAGE_KEY_HUMAN);
         break;
-      case 'Droid':
+      case 'droid':
         localStorage.removeItem(STORAGE_KEY_DROID);
         break;
     
@@ -158,10 +163,10 @@ export class SpeciePageComponent implements OnChanges {
 
   getSpecieVideo(specieName: string) {
     switch (specieName) {
-      case 'Human':
+      case 'human':
           this.specieVideo = 'dOSzCHmP1xM';
           break;
-      case 'Droid':
+      case 'droid':
           this.specieVideo = 'buJjccK98FQ';
           break;       
       default:

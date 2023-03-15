@@ -6,6 +6,7 @@ import { Specie } from '../helpers/classes/Specie';
 import { People } from '../helpers/classes/People';
 import { Vehicle } from '../helpers/classes/Vehicle';
 import { Starship } from '../helpers/classes/Starship';
+import { Film } from '../helpers/classes/Film';
 
 @Injectable({
   providedIn: 'root'
@@ -44,8 +45,25 @@ export class SpeciesService {
     let starshipUrl = API_BASE_URL + API_STARSHIPS;
     return this.http.get<ResponseStarship>(starshipUrl).pipe(map(e => {
       return e.results.map(item => {
-        return new Starship(item.name, item.model, item.cost_in_credits, item.starship_class);
+        return new Starship(item.name, item.model, item.cost_in_credits, item.starship_class, item.films);
       })
+    }))
+  }
+
+  getStarshipByName(starshipName: string): Observable<Starship[]> {
+    let starshipUrl = API_BASE_URL + API_STARSHIPS + "?search=" + starshipName;
+    return this.http.get<ResponseStarship>(starshipUrl).pipe(map(e => {
+      return e.results.map(item => {
+        return new Starship(item.name, item.model, item.cost_in_credits, item.starship_class, item.films);
+      })
+    }))
+  }
+
+  getFilms(films: Array<string>): Observable<Film> {   
+    return from(films).pipe(concatMap(film => {
+      return this.http.get<Film>(film).pipe(map(item => {         
+          return new Film(item.title, item.episode_id, item.release_date);       
+      }))
     }))
   }
 }
@@ -59,3 +77,4 @@ interface ResponseVehicle {
 interface ResponseStarship {
     results: Starship[];
 }
+

@@ -1,6 +1,6 @@
 
 <div class="col-4">
-    <a [routerLink]="['specie', specie.name]">
+    <a [routerLink]="['specie', specie.name | lowercase]">
         <div class="card">
             <div class="card-header">
                 <img src="{{imagePath}}" alt="">

@@ -1,17 +1,17 @@
 <app-loader *ngIf="loading">
 </app-loader>
 
-<app-navbar
+<app-navbar *ngIf="!loading"
     [userName]="user.name"
     [specieName]="specieName"
     >
 </app-navbar>
 
-<div *ngIf="specieName!='Wookie'">
+<div *ngIf="specieName!='wookie'">
     <app-vehicles
         [specieVehicles]="vehicles"
         [specieName]="specieName" 
-    > </app-vehicles>
+    ></app-vehicles>
 
     <div class="container mt-3">
         <button class="btn btn-primary" (click)="deleteVehicles()">Delete manually added vehicles</button>
@@ -20,11 +20,13 @@
     <app-form 
         (onAddVehicle)="addVehicle($event)"
     ></app-form>
+
+    <app-video
+        [videoId]="specieVideo" 
+    ></app-video>
 </div>
 
-
-
-<app-starships *ngIf="specieName=='Wookie'"
+<app-starships *ngIf="specieName=='wookie'"
     [starships]="starships"
     [specieName]="specieName">
 </app-starships>

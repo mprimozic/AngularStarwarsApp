@@ -14,11 +14,16 @@ import { VehiclesComponent } from './component/vehicles/vehicles.component';
 import { StarshipsComponent } from './component/starships/starships.component';
 import { FormComponent } from './component/form/form.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { VideoComponent } from './component/video/video.component';
+import { FilmsComponent } from './component/films/films.component';
+import { RemoveSpacePipe } from './pipe/remove-space.pipe';
+import { SafePipe } from './pipe/safe.pipe';
 
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
   {path: 'specie/:specieName', component: SpeciePageComponent},
+  {path: 'specie/:specieName/:starshipName', component: FilmsComponent},
 
 ]
 
@@ -32,8 +37,12 @@ const routes: Routes = [
     LoaderComponent,
     VehiclesComponent,
     StarshipsComponent,
-    FormComponent
-  ],
+    FormComponent,
+    VideoComponent,
+    FilmsComponent,
+    RemoveSpacePipe,
+    SafePipe,
+     ],
   imports: [
     BrowserModule,
     AppRoutingModule,
